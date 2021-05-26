@@ -1,0 +1,12 @@
+.header {
+    width: 100%;
+    z-index: 99;
+}
+
+.logo {
+    text-align: left;
+    padding: 1.3rem;
+    background-color: rgb(5, 51, 65);
+    color: white;
+    font-weight: bold
+}
