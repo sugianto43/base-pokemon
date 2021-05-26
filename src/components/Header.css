@@ -4,9 +4,15 @@
 }
 
 .logo {
-    text-align: left;
     padding: 1.3rem;
     background-color: rgb(5, 51, 65);
     color: white;
-    font-weight: bold
+    font-weight: bold;
+    cursor: pointer;
+    /* justify-self: ; */
+}
+
+.logo:hover {
+    color: rgb(85, 204, 240);
+    transition: ease-in-out;
 }
