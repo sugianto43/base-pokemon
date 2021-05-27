@@ -16,5 +16,5 @@
 
 .logo:hover {
     color: rgb(85, 204, 240);
-    transition: ease-in-out;
+    transition: all 0.3s ease 0s;
 }

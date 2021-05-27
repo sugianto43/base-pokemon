@@ -3,6 +3,7 @@ import "./DetailPage.css";
 import { useParams } from "react-router";
 import { useQuery, gql } from "@apollo/client";
 import Loading from "./Loading";
+import { Link } from "react-router-dom";
 
 const POKEMON_QUERY = gql`
   query Pokemon($id: String, $name: String) {
@@ -31,6 +32,7 @@ const POKEMON_QUERY = gql`
       resistant
       weaknesses
       evolutions {
+        id
         name
         image
       }
@@ -40,7 +42,6 @@ const POKEMON_QUERY = gql`
 
 function DetailPage() {
   const params = useParams();
-  console.log(typeof params.name);
 
   const { data, loading, error } = useQuery(POKEMON_QUERY, {
     variables: {
@@ -51,7 +52,6 @@ function DetailPage() {
 
   if (loading || !data) return <Loading />;
   if (error) return <pre>{error.message}</pre>;
-  console.log(data.pokemon);
 
   return (
     <div className="detail-container">
@@ -60,19 +60,25 @@ function DetailPage() {
           <img src={data.pokemon?.image} alt={data.pokemon?.name} />
           <p>{data.pokemon?.name}</p>
         </div>
-        {!data?.pokemon?.evolutions ? (""
-          // <p style={{ padding: "1rem" }}>No Evolutions</p>
+        {!data?.pokemon?.evolutions ? (
+          ""
         ) : (
           <div className="evolutions">
             <p className="title">Evolutions</p>
-            <div className="image-container">
+            <div style={{display: 'flex'}}>
               {data?.pokemon?.evolutions?.map((item, idx) => (
-                <div className="image-wrap" key={idx}>
-                  <img src={item.image} alt={item.name} />
-                  <p>{item.name}</p>
-                </div>
+                <Link
+                  to={`/detail/${item.name}/${item.id}`}
+                  style={{ textDecoration: "none" }}
+                  className="image-container"
+                >
+                  <div className="image-wrap" key={idx}>
+                    <img src={item.image} alt={item.name} />
+                    <p>{item.name}</p>
+                  </div>
+                </Link>
               ))}
-            </div>
+              </div>
           </div>
         )}
       </div>

@@ -21,7 +21,7 @@ const POKEMONS_QUERY_APOLLO = gql`
 
 function HomePage() {
   const [filteredData, setFilteredData] = useState("");
-  const [page, setPage] = useState(15)
+  const [page, setPage] = useState(9);
   const options = [
     "Normal",
     "Fire",
@@ -45,19 +45,12 @@ function HomePage() {
 
   const { data, loading, error } = useQuery(POKEMONS_QUERY_APOLLO);
 
-  if (loading) return <Loading />;
+  if (loading || !data) return <Loading />;
   if (error) return <pre>{error.message}</pre>;
 
-  console.log(data.pokemons);
-  const handleLoadMore = ()=> {
-    if (page !== 149) {
-
-      setPage(page + 3)
-    }else{
-      setPage(15)
-    }
-  }
-
+  const handleLoadMore = () => {
+    setPage(page + 3);
+  };
   return (
     <>
       <div className="dropdown">
@@ -70,11 +63,12 @@ function HomePage() {
       <InfiniteScroll
         pageStart={0}
         loadMore={handleLoadMore}
-        hasMore={true || false}
-        loader={<Loading/>}
+        hasMore={page === data.pokemons.length ? false : true}
+        loader={<Loading />}
       >
         <div className="card-container">
-          {data?.pokemons?.slice(0, page)
+          {data?.pokemons
+            ?.slice(0, page)
             .filter((val) => {
               if (setFilteredData === "") {
                 return val;
@@ -88,7 +82,12 @@ function HomePage() {
               }
             })
             .map((item) => (
-              <Card name={item.name} id={item.id} image={item.image} />
+                <Card
+                  name={item.name}
+                  id={item.id}
+                  image={item.image}
+                  key={item.id}
+                />
             ))}
         </div>
       </InfiniteScroll>

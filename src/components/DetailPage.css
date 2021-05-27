@@ -47,7 +47,7 @@
 
 .image-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: row !important;
     flex-wrap: wrap;
     gap: .5rem;
     margin: 10px;
@@ -72,6 +72,13 @@
     color: white;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+.image-wrap:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+    transform: translateY(-0.2rem);
+    transition: all 0.2s ease-in-out 0s;
+    cursor: pointer;
 }
 
 .weight-range {
