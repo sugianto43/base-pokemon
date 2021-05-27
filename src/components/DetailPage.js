@@ -1,111 +1,110 @@
-import { React, useEffect, useState } from "react";
-import axios from "axios";
+import { React } from "react";
 import "./DetailPage.css";
 import { useParams } from "react-router";
+import { useQuery, gql } from "@apollo/client";
+import Loading from "./Loading";
 
-const GRAPHQL_POKEMON = "https://graphql-pokemon2.vercel.app";
-const POKEMON_QUERY = `
-{
-    pokemon(id: "UG9rZW1vbjowMDQ=", name: "Charmander") {
-            id
-            name
-            image
-            weight {
-              minimum
-              maximum
-            }
-            height {
-              minimum
-              maximum
-            }
-            classification
-            types
-            attacks {
-              fast {
-                name
-              }
-              special {
-                name
-              }
-            }
-            resistant
-            weaknesses
-            evolutions{
-              name
-              image
-            }
-          }
+const POKEMON_QUERY = gql`
+  query Pokemon($id: String, $name: String) {
+    pokemon(id: $id, name: $name) {
+      id
+      name
+      image
+      weight {
+        minimum
+        maximum
+      }
+      height {
+        minimum
+        maximum
+      }
+      classification
+      types
+      attacks {
+        fast {
+          name
+        }
+        special {
+          name
+        }
+      }
+      resistant
+      weaknesses
+      evolutions {
+        name
+        image
+      }
+    }
   }
 `;
 
 function DetailPage() {
-const params = useParams();
-console.log( typeof params.name)
+  const params = useParams();
+  console.log(typeof params.name);
 
+  const { data, loading, error } = useQuery(POKEMON_QUERY, {
+    variables: {
+      id: params.id,
+      name: params.name,
+    },
+  });
 
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    axios
-      .post(GRAPHQL_POKEMON, {
-        query: POKEMON_QUERY,
-      })
-      .then((res) => {
-        setData(res.data.data.pokemon);
-      });
-  }, [params.id, params.name]);
+  if (loading || !data) return <Loading />;
+  if (error) return <pre>{error.message}</pre>;
+  console.log(data.pokemon);
 
   return (
     <div className="detail-container">
       <div className="left-section">
         <div className="image-card">
-          <img src={data.image} alt={data.name} />
-          <p>{data.name}</p>
+          <img src={data.pokemon?.image} alt={data.pokemon?.name} />
+          <p>{data.pokemon?.name}</p>
         </div>
-        <div className="evolutions">
-          <p className="title">Evolutions</p>
-          <div className="image-container">
-            {data?.evolutions?.map((item, idx) => (
-              <div className="image-wrap" key={idx}>
-                <img src={item.image} alt={item.name} />
-                <p>{item.name}</p>
-              </div>
-            ))}
+        {!data?.pokemon?.evolutions ? (""
+          // <p style={{ padding: "1rem" }}>No Evolutions</p>
+        ) : (
+          <div className="evolutions">
+            <p className="title">Evolutions</p>
+            <div className="image-container">
+              {data?.pokemon?.evolutions?.map((item, idx) => (
+                <div className="image-wrap" key={idx}>
+                  <img src={item.image} alt={item.name} />
+                  <p>{item.name}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="right-section">
         <div className="weight-range">
           <p className="title">Weight Range</p>
           <p className="content">
-            {data?.weight?.minimum} - {data?.weight?.maximum}
+            {data?.pokemon?.weight?.minimum} - {data?.pokemon?.weight?.maximum}
           </p>
         </div>
 
         <div className="height-range">
           <p className="title">Height Range</p>
           <p className="content">
-            {data?.height?.minimum} - {data?.height?.maximum}
+            {data?.pokemon?.height?.minimum} - {data?.pokemon?.height?.maximum}
           </p>
         </div>
 
         <div className="classification">
           <p className="title">Classification</p>
-          <p className="content">{data.classification}</p>
+          <p className="content">{data.pokemon?.classification}</p>
         </div>
 
-        <div className="types">
+        <div className="classification">
           <p className="title">Types</p>
-          <ul>
-            {data?.types?.map((item, idx) => {
-             return <li key={idx}>{item}</li>;
-            })}
-          </ul>
+          <p className="content">{data.pokemon.types.join(", ")}</p>
         </div>
 
         <div className="types">
           <p className="title">Fast Attacks</p>
           <ul>
-            {data?.attacks?.fast?.map((item, idx) => {
+            {data?.pokemon?.attacks?.fast?.map((item, idx) => {
               return <li key={idx}>{item.name}</li>;
             })}
           </ul>
@@ -114,7 +113,7 @@ console.log( typeof params.name)
         <div className="types">
           <p className="title">Special Attacks</p>
           <ul>
-            {data?.attacks?.special.map((item, idx) => {
+            {data?.pokemon?.attacks?.special.map((item, idx) => {
               return <li key={idx}>{item.name}</li>;
             })}
           </ul>
@@ -123,7 +122,7 @@ console.log( typeof params.name)
         <div className="types">
           <p className="title">Resistances</p>
           <ul>
-            {data?.resistant?.map((item, idx) => {
+            {data?.pokemon?.resistant?.map((item, idx) => {
               return <li key={idx}>{item}</li>;
             })}
           </ul>
@@ -132,7 +131,7 @@ console.log( typeof params.name)
         <div className="types">
           <p className="title">Weaknesses</p>
           <ul>
-            {data?.weaknesses?.map((item, idx) => {
+            {data?.pokemon?.weaknesses?.map((item, idx) => {
               return <li key={idx}>{item}</li>;
             })}
           </ul>

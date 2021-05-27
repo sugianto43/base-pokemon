@@ -9,6 +9,7 @@ function Header() {
           
         <h2 className="logo">POKE-APP</h2>
       </Link>
+      <p></p>
     </div>
   );
 }

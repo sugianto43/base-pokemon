@@ -1,13 +1,15 @@
 /* eslint-disable array-callback-return */
-import { React, useEffect, useState } from "react";
-import axios from "axios";
+import { React, useState } from "react";
 import "./HomePage.css";
 import Card from "./Card";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { useQuery, gql } from "@apollo/client";
+import Loading from "./Loading";
 
-const GRAPHQL_POKEMON = "https://graphql-pokemon2.vercel.app";
-const POKEMONS_QUERY = `
+
+
+const POKEMONS_QUERY_APOLLO = gql`
   {
     pokemons(first: 150) {
       id
@@ -19,19 +21,16 @@ const POKEMONS_QUERY = `
 `;
 
 function HomePage() {
-  const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState('')
   const options = ['Normal', 'Fire', 'Fighting', 'Water', 'Flying', 'Grass', 'Poison', 'Electric', 'Ground', 'Psychic', 'Rock', 'Ice', 'Bug', 'Dragon', 'Ghost', 'Dark', 'Steel', 'Fairy'];
-  useEffect(() => {
-    axios
-      .post(GRAPHQL_POKEMON, {
-        query: POKEMONS_QUERY,
-      })
-      .then((res) => {
-        setData(res.data.data.pokemons);
-        console.log('data', res.data.data.pokemons)
-      });
-  }, []);
+  
+  const { data, loading, error } = useQuery(POKEMONS_QUERY_APOLLO);
+
+  if (loading) return <Loading/>;
+  if (error) return <pre>{error.message}</pre>
+
+  console.log(data.pokemons)
+
   return (
     <>
       <div className="dropdown">
@@ -43,10 +42,10 @@ function HomePage() {
         
       </div>
       <div className="card-container">
-        {data.filter((val) => {
+        {data.pokemons.filter((val) => {
             if (setFilteredData === "") {
               return val;
-            } else if (val.types[0].toLowerCase().includes(filteredData.toLowerCase())) {
+            } else if (val.types.join(' ').toLowerCase().includes(filteredData.toLowerCase())) {
               return val;
             }
           }).map((item) => (

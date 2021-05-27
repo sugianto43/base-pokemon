@@ -6,7 +6,7 @@
 }
 
 .image-card {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     border-radius: 10px;
     position: relative;
     width: 45vw;
@@ -31,7 +31,7 @@
 .evolutions {
     width: 100%;
     height: auto;
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     margin-top: 2rem;
     border-radius: 5px;
 }
@@ -54,7 +54,7 @@
 }
 
 .image-container > .image-wrap {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     border-radius: 5px;
     width: 10rem;
     height: auto;
@@ -75,7 +75,7 @@
 }
 
 .weight-range {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     width: 47vw;
     border-radius: 5px;
 }
@@ -93,7 +93,7 @@
 }
 
 .height-range {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     width: 47vw;
     border-radius: 5px;
     margin-top: 1rem;
@@ -112,7 +112,7 @@
 }
 
 .classification {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     width: 47vw;
     border-radius: 5px;
     margin-top: 1rem;
@@ -131,7 +131,7 @@
 }
 
 .types {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     width: 47vw;
     border-radius: 5px;
     margin-top: 1rem;

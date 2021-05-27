@@ -14,7 +14,7 @@
 }
 
 .card {
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, .25);
     border-radius: 10px;
     margin: 1.5rem 0;
 }
@@ -65,5 +65,23 @@
 @media (max-width: 900px) {
     .dropdown {
         width: 100%;
+    }
+
+    .card-container {
+        padding: 0rem 2rem 1rem 2rem;
+    }
+}
+
+
+
+@media (max-width: 600px) {
+    .card > img {
+        height: 300px;
+    }
+}
+
+@media (max-width: 400px) {
+    .card > img {
+        height: 200px;
     }
 }
