@@ -7,7 +7,7 @@ function Header() {
     <div className="header" style={{ position: "fixed" }}>
       <Link to="/" style={{textDecoration: "none"}}>
           
-        <h2 className="logo">POKE-APP</h2>
+        <h2 className="logo">POKEDEX</h2>
       </Link>
       <p></p>
     </div>

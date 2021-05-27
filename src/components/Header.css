@@ -7,10 +7,11 @@
 }
 
 .logo {
-    padding: 1.3rem;
+    padding: 1.3rem 2rem;
     color: white;
     font-weight: bold;
     cursor: pointer;
+    font-style: italic;
 }
 
 .logo:hover {
